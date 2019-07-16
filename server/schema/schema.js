@@ -11,7 +11,7 @@ const {
 const _ = require('lodash')
 
 // dummy book data
-const book = [
+const books = [
   { name: "Name of the Wind", genre: "Fantasy", id: "1", authorId: "1" },
   { name: "The Final Empire", genre: "Fantasy", id: "2", authorId: "2" },
   { name: "The Long Earth", genre: "Sci-Fi", id: "3", authorId: "3" },
@@ -65,7 +65,7 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve (parent, args) {
         // code to get data from db / other sources
-        return _.find(book, { id: args.id });
+        return _.find(books, { id: args.id });
       }
     },
     author: {
@@ -73,6 +73,12 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve (parent, args) {
         return _.find(author, { id: args.id })
+      }
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve (parent, args) {
+        return books
       }
     }
   }
