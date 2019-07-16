@@ -21,7 +21,7 @@ const books = [
 ];
 
 // dummy author data
-const author = [
+const authors = [
   {name: 'Patrick Rothfuss', age: 44, id: '1'},
   {name: 'Bredon Sanderson', age: 42, id: '2'},
   {name: 'Terry Pratchett', age: 66, id: '3'}
@@ -36,7 +36,7 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve (parent, args) {
-        return _.find(author, {id: parent.authorId})
+        return _.find(authors, {id: parent.authorId})
       }
     }
 
@@ -52,7 +52,7 @@ const AuthorType = new GraphQLObjectType({
     books: {
       type: new GraphQLList(BookType),
       resolve (parent, args) {
-        return _.filter(book, {authorId: parent.id})
+        return _.filter(books, {authorId: parent.id})
       }
     }
   })
@@ -72,13 +72,19 @@ const RootQuery = new GraphQLObjectType({
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve (parent, args) {
-        return _.find(author, { id: args.id })
+        return _.find(authors, { id: args.id })
       }
     },
     books: {
       type: new GraphQLList(BookType),
       resolve (parent, args) {
         return books
+      }
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve (parent, args) {
+        return authors
       }
     }
   }
