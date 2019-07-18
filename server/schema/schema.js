@@ -1,4 +1,7 @@
 const graphql = require('graphql');
+const _ = require('lodash');
+const Book = require('../models/book')
+const Author = require('../models/author')
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -70,6 +73,23 @@ const RootQuery = new GraphQLObjectType({
         return authors
       }
     }
+});
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt}
+        },
+        resolve (parent, args) {
+          let author = new Author({
+            name: args.name,
+            age: args.age
+          })
+          return author.save()
   }
 });
 
