@@ -6,7 +6,7 @@ const dotenv = require('dotenv').config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_LOCALHOST, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_LOCALHOST, { useNewUrlParser: true, useFindAndModify: false });
 const db = mongoose.connection
 db.on('error', (err) => console.log(err))
 db.once('open', () => console.log(`connected to mongodb ${ process.env.MONGODB_LOCALHOST}`))

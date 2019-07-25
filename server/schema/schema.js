@@ -1,5 +1,4 @@
 const graphql = require("graphql");
-const _ = require("lodash");
 const Book = require("../models/book");
 const Author = require("../models/author");
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
@@ -136,7 +135,7 @@ const Mutation = new GraphQLObjectType({
     },
     updateBook: {
       type: BookType,
-      description: "Updates an existing book",
+      description: "Update an existing book",
       args: {
         id: { type: GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
@@ -144,7 +143,7 @@ const Mutation = new GraphQLObjectType({
       },
       resolve: (parent, args) => {
         return Book.findByIdAndUpdate(args.id, { name: args.name, genre: args.genre }, { new: true });
-    }
+      }
     },
     updateAuthor: {
       type: AuthorType,
@@ -156,6 +155,26 @@ const Mutation = new GraphQLObjectType({
       },
       resolve: (parent, args) => {
         return Author.findByIdAndUpdate(args.id, {name: args.name, age: args.age}, {new: true} )
+      }
+    },
+    deleteBook: {
+      type: BookType,
+      description: "delete a book",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) }
+      },
+      resolve: (parent, args) => {
+        return Book.findByIdAndDelete(args.id)
+      }
+    },
+    deleteAuthor: {
+      type: AuthorType,
+      description: "delete an author",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: (parent, args) => {
+        return Author.findByIdAndDelete(args.id)
       }
     },
   }
