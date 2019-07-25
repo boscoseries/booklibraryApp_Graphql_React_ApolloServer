@@ -1,16 +1,8 @@
-const graphql = require('graphql');
-const _ = require('lodash');
-const Book = require('../models/book')
-const Author = require('../models/author')
-const {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLSchema,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-} = graphql;
+const graphql = require("graphql");
+const _ = require("lodash");
+const Book = require("../models/book");
+const Author = require("../models/author");
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
 
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -153,6 +145,19 @@ const Mutation = new GraphQLObjectType({
       resolve: (parent, args) => {
         return Book.findByIdAndUpdate(args.id, { name: args.name, genre: args.genre }, { new: true });
     }
+    },
+    updateAuthor: {
+      type: AuthorType,
+      description: "Update an author",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => {
+        return Author.findByIdAndUpdate(args.id, {name: args.name, age: args.age}, {new: true} )
+      }
+    },
   }
 });
 
